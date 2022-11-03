@@ -1,0 +1,394 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+    
+        #main {
+            display: -ms-grid;
+            display: grid;
+            grid-template-columns: 250px 250px 250px;
+            gap: 15px;
+            text-align: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+        }
+            
+
+        body {
+            text-align: center;
+            font-family: Calibri;
+        }
+
+        .elements {
+            align-items: center;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: transparent 0 0 0 3px,rgba(18, 18, 18, .1) 0 6px 20px;
+            box-sizing: border-box;
+            color: #121212;
+            cursor: pointer;
+            display: inline-flex;
+            flex: 1 1 auto;
+            font-family: Inter,sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            justify-content: center;
+            line-height: 1;
+            margin: 0;
+            outline: none;
+            padding: 1rem 1.2rem;
+            text-align: center;
+            text-decoration: none;
+            transition: box-shadow .2s,-webkit-box-shadow .2s;
+            white-space: nowrap;
+            border: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+            .elements:hover {
+                box-shadow: #121212 0 0 0 3px, transparent 0 0 0 0;
+            }
+
+        img {
+            max-width: 100px;
+        }
+
+        div.col {
+            border: 1px solid;
+            border-radius: 1%;
+            padding: 20px;
+        }
+
+        div.dish {
+            border: 1px solid;
+            border-radius: 1%;
+            padding: 20px;
+          
+        }
+
+        #formIng {
+            
+            grid-template-columns: 150px;
+            gap: 5px;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        hr.solid {
+            border-top: 3px solid #bbb;
+            width: 60%;
+            text-align: center;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+            .modal-content {
+                border: 1px solid;
+                border-radius: 1%;
+                padding: 20px;
+            }
+                
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        #main .dish {
+            border: 1px solid;
+            border-radius: 1%;
+            padding: 20px;
+            -webkit-box-shadow: 0px 0px 79px 0px rgb(0 0 0 / 75%);
+            box-shadow: 0px 0px 79px 0px rgb(0 0 0 / 75%);
+        }
+        .row {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+            justify-content: space-around;
+        }
+    </style>
+    <script>
+        const ingredientJson =
+            [
+                {
+                    id: 1,
+                    name: 'Brocoli',
+                    image: 'https://i5.walmartimages.com/asr/c721459d-3826-4461-9e79-c077d5cf191e_3.ca214f10bb3c042f473588af8b240eca.jpeg',
+                    calories: 34
+                },
+                {
+                    id: 2,
+                    name: 'carrot',
+                    image: 'https://i5.walmartimages.ca/images/Enlarge/686/686/6000198686686.jpg',
+                    calories: 30
+                },
+                {
+                    id: 3,
+                    name: 'Rice sheets',
+                    image: 'https://assets.bonappetit.com/photos/57e3f9b8bf7e91497a10e720/master/pass/ttar_ricepaper_h.jpg',
+                    calories: 14
+                },
+                {
+                    id: 4,
+                    name: 'Soy souce',
+                    image: 'https://images.heb.com/is/image/HEBGrocery/000129449?fit=constrain,1&wid=800&hei=800&fmt=jpg&qlt=85,0&resMode=sharp2&op_usm=1.75,0.3,2,0',
+                    calories: 50
+                }
+            ]
+        class Ingredient {
+            constructor(id, name, image, calories) {
+                this.id = id;
+                this.name = name;
+                this.image = image;
+                this.calories = calories;
+            }
+        }
+        class DishRecipe {
+            constructor(name, time, cookingMethod, image) {
+                this.name = name;
+                this.time = time;
+                this.cookingMethod = cookingMethod;
+                this.image = image;
+            }
+        }
+
+
+        dishes = [];
+        ingredient = [{ name: 'Pad', id_of_ing: 1 }, { name: 'Pad', id_of_ing: 3 }];
+
+        $(document).ready(function () {
+            $(".divs").hide();
+            $(".c").click(function () {
+                $("#recipes").hide();
+            });
+            $(".c").click(function () {
+                $("#ingrid").hide();
+
+            });
+            $("#recip").click(function () {
+                $("#recipes").show();
+                $("#ingrid").hide();
+            });
+            $("#ingridi").click(function () {
+                $("#ingrid").show();
+                $("#recipes").hide();
+            });
+        });
+        function addNewRecipe() {
+            str = "";
+            for (var i = 0; i < ingredientJson.length; i++) {
+                idI = ingredientJson[i].id;
+                img = ingredientJson[i].image;
+                nam = ingredientJson[i].name;
+                cal = ingredientJson[i].calories;
+                str += `<div class="col">add<input id="${idI}" type="checkbox"><div id="item${idI}"><p>ingredient details: </p>
+                                                                <img src="${img}" alt="${nam}">
+                                                                <span>${nam}</span>
+                                                                <span>calories: ${cal} </span></div></div>`;
+            }
+            document.getElementById("formIng").innerHTML = str;
+        }
+        function createIngredient() {
+            ingredientName = document.getElementById("IngredientName").value;
+            ingredientImage = document.getElementById("IngredientImage").value;
+            ingredientCalories = document.getElementById("IngredientCalories").value;
+            id = ingredientJson.length + 1;
+
+            ingredientJson.push(new Ingredient(id, ingredientName, ingredientImage, ingredientCalories));
+            document.getElementById("IngredientName").value = "";
+            document.getElementById("IngredientImage").value = "";
+            document.getElementById("IngredientCalories").value = "";
+            alert("ingrediand was added successfully - go check in new recipe");
+        }
+        function createRecipe() {
+            recipeName = document.getElementById("recipeName").value;
+            recipeMethod = document.getElementById("recipeMethod").value;
+            recipeTime = document.getElementById("recipeTime").value;
+            recipeImage = document.getElementById("recipeImage").value;
+
+            for (var i = 0; i < ingredientJson.length; i++) {
+                id = i + 1;
+                if (document.getElementById(id).checked) {
+                    ingredient.push({ name: recipeName, id_of_ing: id - 1 });
+                }
+            }
+            sumOfCal = getTotalCalories(recipeName);
+            str = "";
+            str = `
+<div class="col dish">
+                             <h3>Dish Recipe details: </h3>
+                                                    <img src="${recipeImage}" alt="${recipeImage}">
+                                                    <p>dish name: ${recipeName} </p>
+                                                    <p>Cooking method: ${recipeMethod}</p>
+                                                    <p>Total cooking time: ${recipeMethod}</p>
+                                                    <p>total calories: ${sumOfCal} </p>
+             <button id="myBtn_${recipeName}" onclick="getIngredients('${recipeName}')">Show ingredients</button>
+<div id="myModal_${recipeName}" class="modal">
+              <div class="modal-content">
+                 <span class="close">&times;</span>
+             <div id="div_${recipeName}"></div>
+             </div>
+        </div>
+          
+            </div>`;
+            document.getElementById("main").innerHTML += str;
+
+
+        }
+
+        function getIngredients(y) {
+            var modal = document.getElementById("myModal" + "_" + y);
+            var btn = document.getElementById("myBtn" + "_" + y);
+            var span = document.getElementsByClassName("close")[0];
+            btn.onclick = function () {
+                modal.style.display = "block";
+            }
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+            str = "<div class='col-12'><h1>ingredient details: </h1></div><div class='row'>";
+            for (var f = 0; f < ingredient.length; f++) {
+                if (y == ingredient[f].name) {
+                    serial_id = parseInt(ingredient[f].id_of_ing)
+                    idI = ingredientJson[serial_id].id;
+                    img = ingredientJson[serial_id].image;
+                    nam = ingredientJson[serial_id].name;
+                    cal = ingredientJson[serial_id].calories;
+                    str += `
+                            <div class="col" id="item${idI}">
+                            <img src="${img}" alt="${nam}">
+                            <p>${nam}</p></br> <span>calories: ${cal} </span></div>`;
+                }
+
+            }
+            str +="</div>"
+            document.getElementById(`div_${y}`).innerHTML = str;
+
+        }
+
+
+
+
+
+        function getTotalCalories(x) {
+            sum = 0;
+
+            for (var f = 0; f < ingredient.length; f++) {
+                if (x == ingredient[f].name) {
+                    ser = parseInt(ingredient[f].id_of_ing);
+                    sum += ingredientJson[ser].calories;
+                }
+            }
+            return sum;
+        }
+    </script>
+
+</head>
+<body onload="init()">
+    <h1>Dishes</h1>
+    <div id="elements">
+        <button class="elements" id="recip" onclick="addNewRecipe()">
+            New Recipe
+        </button>
+        <button class="elements" id="ingridi" onclick="addNewIngredient()">
+            New Ingredient
+        </button>
+    </div>
+    <div id="recipes" class="divs">
+        <div id="simpleForm" style="display: block;">
+            <label for="recipeName">Recipe name: </label><br><input type="text" id="recipeName"><br><br>
+            <label for="recipeMethod">Recipe cooking method: </label><br><input type="text" id="recipeMethod"><br><br>
+            <label for="recipeTime">Recipe cooking time: </label><br><input type="text" id="recipeTime"><br><br>
+            <label for="recipeImage">Recipe Image (url): </label><br><input type="text" id="recipeImage"><br><br>
+            <h3>Choose ingridents</h3>
+            <div id="formIng" class="row">
+            </div>
+            <button onclick="createRecipe()">Create recipe</button>
+            <button class="c">close</button>
+        </div>
+    </div>
+    <div id="ingrid" class="divs">
+        <div id="simpleForm" style="display: block;">
+            <label for="IngredientName">Ingredient name: </label><br><input type="text" id="IngredientName"><br><br>
+            <label for="IngredientImage">Ingredient Image (url): </label><br><input type="text" id="IngredientImage"><br><br>
+            <label for="IngredientCalories">Ingredient Calories: </label><br><input type="text" id="IngredientCalories"><br><br>
+            <button onclick="createIngredient()">Create Ingredient</button>
+            <button class="c">close</button>
+        </div>
+    </div>
+    <hr class="solid">
+    <div id="main" class="row">
+
+        <div class="col dish">
+            <h3>Dish Recipe details: </h3>
+            <img src="https://img.hellofresh.com/f_auto,fl_lossy,q_auto,w_1200/hellofresh_s3/image/beef-pad-thai-43f58743.jpg" alt="Pad thai picture">
+            <p>dish name: Pad thai </p>
+            <p>Cooking method: sdlfdslf</p>
+            <p>Total cooking time: 60 minutes</p>
+            <p>total calories: 209 </p>
+            <button id="myBtn_Pad" onclick="getIngredients('Pad')">Show ingredients</button>
+            <div id="myModal_Pad" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div class="row" id="div_Pad"></div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</body>
+</html>
